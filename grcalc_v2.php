@@ -65,9 +65,9 @@
       return $menu;
     }
 
-    $Units_list = array("ip" => "US Units", "si" => "SI Units");
-
+    $units_options = array("ip" => "US Units", "si" => "SI Units");
     $toggle = 'toggle()';
+
     function dynamic_radio_vert($the_array, $element_name, $init_value, $on_click) {
       $menu = "<p>\n";
       if (empty($_SESSION[$element_name])) {
@@ -89,7 +89,7 @@
       return $menu;
     }
 
-    $Utility_list = array("yes" => "Yes", "no" => "No");
+    $yesno_options = array('yes' => 'Yes', 'no' => 'No');
     $hide = 'hide()';
 
     function dynamic_radio_horiz($the_array, $element_name, $init_value, $on_click) {
@@ -143,7 +143,7 @@
             <table width="100%" border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td width="55%" class="style12">Would you prefer to use <span class="tip" title="header=[US Units] body=[Customary units in the US are primarily IP with some use of SI]">US Customary</span> or SI units?</td>
-                <td width="14%" class="style13"><?php echo dynamic_radio_vert($Units_list, 'Units', 'ip', $toggle); ?></td>
+                <td width="14%" class="style13"><?php echo dynamic_radio_vert($units_options, 'Units', 'ip', $toggle); ?></td>
                 <td width="31%" >&nbsp;</td>
               </tr>
             </table>
@@ -300,7 +300,7 @@
         </tr>
         <tr>
           <td>&nbsp;</td>
-          <td colspan="2"><span class="style12">This calculator uses utility rates for each city that were valid in May 2010. Would you like to enter your own utility rates instead?</span><?php echo dynamic_radio_horiz($Utility_list, 'utilityrates', 'no', $hide);?> </td>
+          <td colspan="2"><span class="style12">This calculator uses utility rates for each city that were valid in May 2010. Would you like to enter your own utility rates instead?</span><?php echo dynamic_radio_horiz($yesno_options, 'utilityrates', 'no', $hide);?> </td>
           <td></td>
         </tr>
         <tr>
@@ -332,7 +332,7 @@
           <td width="27%" align="left" >
             <div align="right"><br />
               <input type="submit" class="bold" value="Calculate"/>
-              <input type="reset" value="Reset" class="bold" onclick="resetListGroup('cities'); sesssion_reset()" title="Clear all fields"/>
+              <input type="reset" value="Reset" class="bold" onclick="resetListGroup('cities'); session_reset()" title="Clear all fields"/>
             </div>
           </td>
           <td width="56%" ><div align="right"><img src="Images/Partner_Logos.jpg" alt="" width="703" height="106" /></div></td>
@@ -369,7 +369,7 @@
         }
       }
 
-      function sesssion_reset() {
+      function session_reset() {
         window.location.href="session.php";
       }
 
