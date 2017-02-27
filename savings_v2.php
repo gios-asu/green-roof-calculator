@@ -82,7 +82,7 @@ $Buildings = array("O_1980" => "an Old Office Building", "O_2004" => "a New Offi
 // DJS SEPT 2011 - for Canadian cities it appears that the latest database refers to them by
 // 2-letter designation "CN" rather than by Provence. So, I had to replace QC, AB, ON, BC
 // with CN above (and in the citiesconfig.js script)
-// DJS July 20 2012 - it was noted that Nashville was missing on line. Turns out it was a typo in database "0SH" 
+// DJS July 20 2012 - it was noted that Nashville was missing on line. Turns out it was a typo in database "0SH"
 // instead of "NASH". Had to fix in two places -- savings_v2.php and citiesconfig.js. If I was confident I could
 // reload the database I would simply have done that and changed the city name from 0SH to NASH !!!
 
@@ -91,15 +91,13 @@ if ($selected_units == "ip") {
 	$soildepth_units ='inches';
 	$area_units = 'ft';
 	$area = round($area_input/10.76);
-
-	
-	}
+}
 else {
 	$soildepth = $soildepth_input;
 	$soildepth_units = 'cm';
 	$area_units = 'm';
 	$area = $area_input;
- }
+}
 
 
 // User Input Validation Section -------------------------------------------------------------------//
@@ -148,14 +146,13 @@ else {
 	exit;
 }
 
-//Check to see if the percentage of roof covered is between 1 and 100 
+//Check to see if the percentage of roof covered is between 1 and 100
 if (preg_match($pattern_rpercent,$rpercent) and $rpercent <=100 and $rpercent >=1);
 else {
 	echo "<p><b>Percentage of roof covered</b> must be an integer value between 0 (no part of the roof covered) and 100 (100% of the roof covered)</p>";
 	echo "<p>Please return to the <a href=\"grcalc_v2.php\" target=\"_self\">previous page</a> and try again.</p>";
 	exit;
 }
-
 
 // End User Input Validation Section -------------------------------------------------//
 
@@ -224,20 +221,18 @@ $wr_gas_cost = $wr_vals['gas_cost'];
 // DJS SEPT 2011 - need to convert output for gas to Therms if SI
 
 if ($selected_units == "ip") {
-
-
 }
 else {
 	$br_gas_use= $br_gas_use*29.3;
 	$wr_gas_use= $wr_gas_use*29.3;
 	$gr_gas_use= $gr_gas_use*29.3;
-	
-} 
+
+}
 
 //Define TOTAL building gas and elect use by multiplying these per unit area numbers by the area (already converted as appropriate
 	$gr_gas_total= $gr_gas_use*$area;
 	$gr_elec_total=$gr_elec_use*$area;
-	
+
 // DJS END convert for SI
 
 // Calculate GR vs BR energy data
@@ -363,7 +358,7 @@ if ($selected_units == "ip") // nothing special if SI because SI is default for 
   $gr_cumu_et= $gr_cumu_et/25.4;
   $gr_cumu_irr=$gr_cumu_irr/25.4;
   $gr_cumu_ro= $gr_cumu_ro/25.4;
-  
+
   $cr_cumu_precip= $cr_cumu_precip/25.4;
   $cr_cumu_et= $cr_cumu_et/25.4;
   $cr_cumu_irr=$cr_cumu_irr/25.4;
@@ -384,11 +379,11 @@ mysql_close($db);
 //	$user_CostElectBR = round($kWhSaveBR * $electricrate,2);
 //	$user_CostGasBR = round($ThermSaveBR * $gasrate,2);
 //	$user_CostSaveBR = $user_CostElectBR + $user_CostGasBR;
-//	
+//
 //	$user_CostElectWR = round($kWhSaveWR * $electricrate,2);
 //	$user_CostGasWR = round($ThermSaveWR * $gasrate,2);
 //	$user_CostSaveWR = $user_CostElectWR + $user_CostGasWR;
-//	
+//
 //	$disp_CostSaveBR = $user_CostSaveBR;
 //	$disp_CostSaveWR = $user_CostSaveWR;
 //	}
@@ -396,7 +391,7 @@ mysql_close($db);
 //	$disp_CostSaveBR = $CostSaveBR;
 //	$disp_CostSaveWR = $CostSaveWR;
 //	}
-	
+
 if ($user_rates == "yes") {
 	$electricrate = trim($_POST['electricrate']);
 	$gasrate = trim($_POST['gasrate']);
@@ -408,9 +403,9 @@ if ($user_rates == "yes") {
 	$wr_gas_cost = $wr_gas_use*$gasrate;
 	$savBR_cost = (($br_elec_cost-($gr_elec_cost*$rfraction+$br_elec_cost*(1-$rfraction)))+($br_gas_cost-($gr_gas_cost*$rfraction+$br_gas_cost*(1-$rfraction))))*$area;
 	$savWR_cost = (($wr_elec_cost-($gr_elec_cost*$rfraction+$wr_elec_cost*(1-$rfraction)))+($wr_gas_cost-($gr_gas_cost*$rfraction+$wr_gas_cost*(1-$rfraction))))*$area;
-}	
+}
 
-	
+
 ?>
 
 <!--Display Results  -->
@@ -420,11 +415,11 @@ if ($user_rates == "yes") {
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td>&nbsp;</td>
-  
-    <td class="style8">You specified 
-  <?php echo "<b>$Buildings[$btype]</b>"; ?> 
+
+    <td class="style8">You specified
+  <?php echo "<b>$Buildings[$btype]</b>"; ?>
   in <?php echo "<strong>$Cities[$statecity]</strong>";?> with a total roof area of <span class="style12"><?php echo "$area_input $area_units";?><SUP>2</SUP></span>.
-  
+
 
 
 
@@ -451,7 +446,7 @@ The Green Roof you specified for this building has a <strong>Growing Media Depth
           <td width="63%" class="style8">Electrical Savings:</td>
           <td width="37%">
           <?php if ($savBR_elec_use <=0) printf("<span class=\"style10\">%.1f kWh</span>",$savBR_elec_use); //this displays results in green if positive and in red if negative
-				else { 
+				else {
 				printf("<span class=\"style12\">%.1f kWh</span>",$savBR_elec_use);
 				}
 			?>
@@ -463,7 +458,7 @@ The Green Roof you specified for this building has a <strong>Growing Media Depth
         <tr>
           <td width="63%" class="style8">Electrical Savings:</td>
           <td width="37%"><?php if ($savWR_elec_use <=0) printf("<span class=\"style10\">%.1f kWh</span>",$savWR_elec_use);//this displays results in green if positive and in red if negative
-				else { 
+				else {
 				printf("<span class=\"style12\">%.1f kWh</span>",$savWR_elec_use);
 				}
 			?>
@@ -475,51 +470,51 @@ The Green Roof you specified for this building has a <strong>Growing Media Depth
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td width="63%" class="style8">Gas Savings:</td>
- 
-    <td width="37%"><?php if ($savBR_gas_use <=0) //this displays results in green if positive and in red if negative 
+
+    <td width="37%"><?php if ($savBR_gas_use <=0) //this displays results in green if positive and in red if negative
 	     if ($selected_units=="ip") { printf("<span class=\"style10\">%.1f Therms</span>",$savBR_gas_use); // check for IP units
 		 }
 		 else
 		 {
 		 printf("<span class=\"style10\">%.1f kWh</span>",$savBR_gas_use);
 		 }
-		 
-		else { 
+
+		else {
 		if ($selected_units=="ip") { printf("<span class=\"style12\">%.1f Therms</span>",$savBR_gas_use); // check for IP units
 		 }
 		 else
 		 {
-		 printf("<span class=\"style12\">%.1f kWh</span>",$savBR_gas_use);           
+		 printf("<span class=\"style12\">%.1f kWh</span>",$savBR_gas_use);
 				}
 		 }
-		 
+
 				?>
 	</td>
-    
+
   </tr>
 </table></td>
     <td>&nbsp;</td>
     <td><table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td width="63%" class="style8">Gas Savings:</td>
-    <td width="37%"><?php if ($savWR_gas_use <=0) //this displays results in green if positive and in red if negative 
+    <td width="37%"><?php if ($savWR_gas_use <=0) //this displays results in green if positive and in red if negative
 	     if ($selected_units=="ip") { printf("<span class=\"style10\">%.1f Therms</span>",$savWR_gas_use); // check for IP units
 		 }
 		 else
 		 {
 		 printf("<span class=\"style10\">%.1f kWh</span>",$savWR_gas_use);
 		 }
-		 
-		else { 
+
+		else {
 		if ($selected_units=="ip") { printf("<span class=\"style12\">%.1f Therms</span>",$savWR_gas_use); // check for IP units
 		 }
 		 else
 		 {
-		 printf("<span class=\"style12\">%.1f kWh</span>",$savWR_gas_use);           
+		 printf("<span class=\"style12\">%.1f kWh</span>",$savWR_gas_use);
 				}
 		 }
-		 
-				
+
+
 		?></td>
   </tr>
 </table></td>
@@ -530,7 +525,7 @@ The Green Roof you specified for this building has a <strong>Growing Media Depth
         <tr>
           <td width="63%" class="style8">Total Energy Cost Savings(1): </td>
           <td width="37%"><?php if ($savBR_cost <=0) printf("<span class=\"style10\">$%01.2f</span>",$savBR_cost);//this displays results in green if positive and in red if negative
-				else { 
+				else {
 				printf("<span class=\"style12\">$%01.2f</span>",$savBR_cost);
 				}
 		?>
@@ -542,7 +537,7 @@ The Green Roof you specified for this building has a <strong>Growing Media Depth
         <tr>
           <td width="63%" class="style8">Total Energy Cost Savings(1):</td>
           <td width="37%"><?php if ($savWR_cost <=0) printf("<span class=\"style10\">$%01.2f</span>",$savWR_cost);//this displays results in green if positive and in red if negative
-				else { 
+				else {
 				printf("<span class=\"style12\">$%01.2f</span>",$savWR_cost);
 				}
 		?></td>
@@ -608,7 +603,7 @@ The Green Roof you specified for this building has a <strong>Growing Media Depth
 <!-- WATER BALANCE -->
 
 <table width="100%" border="0" cellspacing="1" cellpadding="1">
-  <tr><th colspan="4" height="60" valign="bottom"><h5 class="style13">Annual Roof Water Balance <?php if ($selected_units=="ip") echo "(in)"; else echo"(mm)"; ?> </h5></th></tr> 
+  <tr><th colspan="4" height="60" valign="bottom"><h5 class="style13">Annual Roof Water Balance <?php if ($selected_units=="ip") echo "(in)"; else echo"(mm)"; ?> </h5></th></tr>
   <tr>
   	<td></td>
   	<td class="style8">Conventional Roof</td>
