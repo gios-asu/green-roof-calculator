@@ -1,0 +1,86 @@
+As I went back through it, I also noticed that the energy cost values for the office buildings didn't quite seem to make sense, so I recalculated them. The recalculated values seem a lot more realistic. I think the issue was related to confusion about whether the values were per unit energy or per unit area (in the SQL database, the units are dollars per square meter).
+
+You can use the same drop_table script, then run this new SQL script to insert the revised data.
+
+On Sat, Sep 24, 2011 at 12:04 PM, David Sailor (from phone) <sailor@cecs.pdx.edu> wrote:
+These are site total energy (Elect + gas). FYI I believe the conversion is ... multiply Btu per sq. Ft by 3.15 to get kWh per sq. m ... please check, though.
+
+-- 
+Sent from my phone. Please excuse my brevity.
+Chad Norvell <cxnorvell@gmail.com> wrote:
+Okay, I'll do some number crunching. These are total energy or electricity only?
+
+On Sat, Sep 24, 2011 at 8:41 AM, David Sailor (from phone) <sailor@cecs.pdx.edu> wrote:
+FYI ... typical EUI for the newer const bldgs (from Torcelini et al benchmark document on NREL site) examples for MED Office
+
+Houston. 49000
+Chicago 50000
+Fairbanks 66000
+Units are Btu/ft2
+
+For the older buildings these values should br mult by about 1.5
+
+Explore if you caan... I will have access to my computer tonight...
+
+-- 
+Sent from my phone. Please excuse my brevity.
+Chad Norvell <cxnorvell@gmail.com> wrote:
+The problem is that I can't fix the rounding error without recalculating the values, and recalculating the values yields the values in today's dataset.
+
+I'll go through it again tonight to see what I can find. Does the calculation process I outlined sound reasonable?
+
+On Fri, Sep 23, 2011 at 5:12 PM, David Sailor (from phone) <sailor@cecs.pdx.edu> wrote:
+I believe that you may have corrected an "error" that was actually a correction to another issue. Your latest version has consumption values for the bldg that are about a factor of ten too large. For now please send back a version with the apparent error, but with the rounding error fixed
+-- 
+Sent from my phone. Please excuse my brevity.
+Chad Norvell <cxnorvell@gmail.com> wrote:
+Actually, I think I may have corrected an error rather than creating one. Try checking against the V1 calculator to see how they compare.
+
+As I was putting together the new file, I noticed that the gas use values for office buildings was about an order of magnitude larger than in the previous file (I didn't see any evidence that electricity was affected). This makes sense to me, because one of the discrepancies I consistently noticed against the V1 calculator was much lower gas use numbers. I suspect the numbers in today's database are correct, and that the previous database had a calculation error in it.
+
+You can confirm by taking a data point in Max's file (say, Anchorage, 1980 office, irrigated green roof, LAI of 5, soil depth of 30 cm). The gas use is 1.66e12 J, or 15735 therms. The model office building has a floor area of 53630 sf and 3 floors, so 17877 sf per floor, or 1661 m^2 per floor, which would be the roof area as well. So the gas use per square meter of roof area is about 9.5 therms, consistent with what's in today's data. The previous dataset reported 1.05 therms. I checked against several other points and found that the recalculated data appears to be right, while the old data does not.
+
+I think you'll find this more closely matches V1 data, so we've actually fixed two problems today.
+
+On Fri, Sep 23, 2011 at 4:10 PM, David Sailor <sailor@cecs.pdx.edu> wrote:
+ 
+Wait a second on that last comment…
+ 
+Total building energy use numbers and corresponding savings now appear to be about an order of magnitude larger than before. Can you please double check that you haven’t introduced a new error?
+Dave
+--------------------------------------------------------------------------------
+David J. Sailor, Ph.D.
+Professor Mechanical and Materials Engineering Dept.
+Director, Green Building Research Laboratory
+Portland State University
+Mail: PO Box 751-ME, Portland OR 97207
+Shipping: 1930 SW 4th Ave., Suite 400, Portland OR 97201
+1+503-725-4265  --  sailor@pdx.edu  --  www.cecs.pdx.edu/~sailor
+--------------------------------------------------------------------------------
+ 
+From: Chad Norvell [mailto:cxnorvell@gmail.com] 
+Sent: Friday, September 23, 2011 3:42 PM
+To: David Sailor; Max Gibson
+Subject: New GRC Data File
+ 
+First things first: Dave, the Excel file you sent earlier today is the same one I used to generate the SQL data. I took a closer look at the energy values to see what the problem might be.
+
+
+Based on just the raw data you can see that the energy difference between irrigated and non-irrigated is usually very small. However, it shouldn't be zero. As I said in the previous email, there's a bit of data processing that happens between Max's raw data and the data that goes into the calculator, since his energy data is for the whole building, and what we want is energy on a per square meter of roof area basis. I think that there were precision problems in the data file I sent you before, which lead to values that were originally very close coming out identical. I re-processed that data, ensuring that full precision was kept at every step, for the attached files, and they should give you better output. I checked every field to see if the same thing was happening anywhere else, but it looks like only electricity and gas use had the problem (they were the only ones with major unit conversions). I also modified the SQL import script to use "double&! amp;! amp;! quot; types instead of "float" to prevent any precision truncation on the database side.
+
+
+The attached SQL files will set you up with the revised data. First run "drop_old_table.sql" to remove the data currently in the GRC database, then run "grc_import_9-23-11.sql" to populate the revised data. Let me know how it looks.
+
+I also attached the CSV file containing the processed data just before importing into SQL. So it's the intermediate step that only represents the changes I made to Max's data to make it work with the calculator. To get this into SQL, you have to manually create the table and fields, specifying data types, then load the data from the CSV into the SQL table -- that's exactly what "grc_import_9-23-11.sql" does, but it includes the data rather than referencing the CSV. So the CSV is just for reference; for uploading to the database it's easier to use the SQL script.
+
+The columns in the CSV correspond to the columns in Max's Excel file, with the following modifications:
+•	The first column is a unique ID number for each data field rather than the "file name" value.
+•	Soil depth is in centimeters rather than meters.
+•	Electricity use was converted from joules used by the whole building to kWh per square meter of roof area. Since the data was generated from the "midrise apartment" and "medium office" (http://apps1.eere.energy.gov/news/progress_alerts.cfm/pa_id=132), the square footage used to normalize the energy use is the total square footage of the model building divided by the number of floors -- the assumption being that this would represent the roof area.
+•	The same is true of gas use, except that it was converted to therms per square meter of roof area.
+•	Precipitation, runoff, and evapotranspiration values were converted from meters to millimeters.
+Let me know if you have any more questions or if you still want to meet on Monday.
+
+
+
+
