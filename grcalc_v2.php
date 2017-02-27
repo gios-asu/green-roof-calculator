@@ -336,7 +336,6 @@
               <input type="reset" value="Reset" class="bold" onclick="resetListGroup('cities'); session_reset()" title="Clear all fields"/>
             </div>
           </td>
-          <td width="56%" ><div align="right"><img src="Images/Partner_Logos.jpg" alt="" width="703" height="106" /></div></td>
           <td>&nbsp;</td>
         </tr>
         <tr>
