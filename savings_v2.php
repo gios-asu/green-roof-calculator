@@ -158,16 +158,15 @@ else {
 
 
 //Connect to greenroof_calc LIVE MySQL database
-$db = mysql_connect('mysql.oit.pdx.edu', 'greenroof_calc_l', '0pAgorl0j')
-	or die("Unable to connect to MySQL");
-$selected = mysql_select_db("greenroof_calc_v2",$db)
-	or die("Could not select greenroof_calc_v2");
+require('localsettings.php');
 
-//Connect to greenroof_calc TEST MySQL database
-//$db = mysql_connect('localhost','root','password')
-//	or die("Unable to connect to MySQL");
-//$selected = mysql_select_db("greenroof_calc_v2",$db)
-//	or die("Could not select greenroof_calc_v2");
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$opt = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+$pdo = new PDO($dsn, $user, $pass, $opt);
 
 // Establish which values of LAI and soil depth we have data for
 $lai_values = array(0.5, 2.0, 5.0);
@@ -191,10 +190,13 @@ for ($i=0;$i<count($sdepth_values);$i++) {
 $interp = ($lai_interp+$sdepth_interp)/2.0;
 
 // Extract GR energy data from database
-$gr_lo_vals = mysql_query("SELECT elec_use, elec_cost, gas_use, gas_cost FROM test WHERE state='$state' AND city='$city' AND building='$btype' AND irr='$irr' AND sdepth='$sdepth_lo' AND lai='$lai_lo'") or die(mysql_error());
-$gr_hi_vals = mysql_query("SELECT elec_use, elec_cost, gas_use, gas_cost FROM test WHERE state='$state' AND city='$city' AND building='$btype' AND irr='$irr' AND sdepth='$sdepth_hi' AND lai='$lai_hi'") or die(mysql_error());
-$gr_lo_vals = mysql_fetch_array($gr_lo_vals,MYSQL_ASSOC);
-$gr_hi_vals = mysql_fetch_array($gr_hi_vals,MYSQL_ASSOC);
+$stmt = $pdo->prepare('SELECT elec_use, elec_cost, gas_use, gas_cost FROM test WHERE state=:state AND city=:city AND building=:btype AND irr=:irr AND sdepth=:sdepth AND lai=:lai');
+$stmt->execute(['state' => $state, 'city' => $city, 'btype' => $btype, 'irr' => $irr, 'sdepth' => $sdepth_lo, 'lai' => $lai_lo]);
+$gr_lo_vals = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT elec_use, elec_cost, gas_use, gas_cost FROM test WHERE state=:state AND city=:city AND building=:btype AND irr=:irr AND sdepth=:sdepth AND lai=:lai');
+$stmt->execute(['state' => $state, 'city' => $city, 'btype' => $btype, 'irr' => $irr, 'sdepth' => $sdepth_hi, 'lai' => $lai_hi]);
+$gr_hi_vals = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $gr_elec_use = $interp*($gr_hi_vals['elec_use']-$gr_lo_vals['elec_use'])+$gr_lo_vals['elec_use'];
 $gr_elec_cost = $interp*($gr_hi_vals['elec_cost']-$gr_lo_vals['elec_cost'])+$gr_lo_vals['elec_cost'];
@@ -202,10 +204,13 @@ $gr_gas_use = $interp*($gr_hi_vals['gas_use']-$gr_lo_vals['gas_use'])+$gr_lo_val
 $gr_gas_cost = $interp*($gr_hi_vals['gas_cost']-$gr_lo_vals['gas_cost'])+$gr_lo_vals['gas_cost'];
 
 // Extract conventional roof energy data from database
-$br_vals = mysql_query("SELECT elec_use, elec_cost, gas_use, gas_cost FROM test WHERE state='$state' AND city='$city' AND building='$btype' AND roof='BR'") or die(mysql_error());
-$wr_vals = mysql_query("SELECT elec_use, elec_cost, gas_use, gas_cost FROM test WHERE state='$state' AND city='$city' AND building='$btype' AND roof='WR'") or die(mysql_error());
-$br_vals = mysql_fetch_array($br_vals,MYSQL_ASSOC);
-$wr_vals = mysql_fetch_array($wr_vals,MYSQL_ASSOC);
+$stmt = $pdo->prepare('SELECT elec_use, elec_cost, gas_use, gas_cost FROM test WHERE state=:state AND city=:city AND building=:btype AND roof="BR"');
+$stmt->execute(['state' => $state, 'city' => $city, 'btype' => $btype]);
+$br_vals = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT elec_use, elec_cost, gas_use, gas_cost FROM test WHERE state=:state AND city=:city AND building=:btype AND roof="WR"');
+$stmt->execute(['state' => $state, 'city' => $city, 'btype' => $btype]);
+$wr_vals = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $br_elec_use = $br_vals['elec_use'];
 $br_elec_cost = $br_vals['elec_cost'];
@@ -240,28 +245,33 @@ else {
 // DJS I added the if-then statement to allow for the option of the non-planted area being "white"
 
 if ($rest=="BR") { // rest of roof is "black"
-$savBR_elec_use = ($br_elec_use-($gr_elec_use*$rfraction+$br_elec_use*(1-$rfraction)))*$area;
-$savBR_gas_use = ($br_gas_use-($gr_gas_use*$rfraction+$br_gas_use*(1-$rfraction)))*$area;
-$savBR_cost = (($br_elec_cost-($gr_elec_cost*$rfraction+$br_elec_cost*(1-$rfraction)))+($br_gas_cost-($gr_gas_cost*$rfraction+$br_gas_cost*(1-$rfraction))))*$area;
-// 
-$savWR_elec_use = ($wr_elec_use-($gr_elec_use*$rfraction+$br_elec_use*(1-$rfraction)))*$area;
-$savWR_gas_use = ($wr_gas_use-($gr_gas_use*$rfraction+$br_gas_use*(1-$rfraction)))*$area;
-$savWR_cost = (($wr_elec_cost-($gr_elec_cost*$rfraction+$br_elec_cost*(1-$rfraction)))+($wr_gas_cost-($gr_gas_cost*$rfraction+$br_gas_cost*(1-$rfraction))))*$area; }
+	$savBR_elec_use = ($br_elec_use-($gr_elec_use*$rfraction+$br_elec_use*(1-$rfraction)))*$area;
+	$savBR_gas_use = ($br_gas_use-($gr_gas_use*$rfraction+$br_gas_use*(1-$rfraction)))*$area;
+	$savBR_cost = (($br_elec_cost-($gr_elec_cost*$rfraction+$br_elec_cost*(1-$rfraction)))+($br_gas_cost-($gr_gas_cost*$rfraction+$br_gas_cost*(1-$rfraction))))*$area;
+	//
+	$savWR_elec_use = ($wr_elec_use-($gr_elec_use*$rfraction+$br_elec_use*(1-$rfraction)))*$area;
+	$savWR_gas_use = ($wr_gas_use-($gr_gas_use*$rfraction+$br_gas_use*(1-$rfraction)))*$area;
+	$savWR_cost = (($wr_elec_cost-($gr_elec_cost*$rfraction+$br_elec_cost*(1-$rfraction)))+($wr_gas_cost-($gr_gas_cost*$rfraction+$br_gas_cost*(1-$rfraction))))*$area;
+}
 
 else {  //rest of roof is white
-$savBR_elec_use = ($br_elec_use-($gr_elec_use*$rfraction+$wr_elec_use*(1-$rfraction)))*$area;
-$savBR_gas_use = ($br_gas_use-($gr_gas_use*$rfraction+$wr_gas_use*(1-$rfraction)))*$area;
-$savBR_cost = (($br_elec_cost-($gr_elec_cost*$rfraction+$wr_elec_cost*(1-$rfraction)))+($br_gas_cost-($gr_gas_cost*$rfraction+$wr_gas_cost*(1-$rfraction))))*$area;
-// 
-$savWR_elec_use = ($wr_elec_use-($gr_elec_use*$rfraction+$wr_elec_use*(1-$rfraction)))*$area;
-$savWR_gas_use = ($wr_gas_use-($gr_gas_use*$rfraction+$wr_gas_use*(1-$rfraction)))*$area;
-$savWR_cost = (($wr_elec_cost-($gr_elec_cost*$rfraction+$wr_elec_cost*(1-$rfraction)))+($wr_gas_cost-($gr_gas_cost*$rfraction+$wr_gas_cost*(1-$rfraction))))*$area; }
+	$savBR_elec_use = ($br_elec_use-($gr_elec_use*$rfraction+$wr_elec_use*(1-$rfraction)))*$area;
+	$savBR_gas_use = ($br_gas_use-($gr_gas_use*$rfraction+$wr_gas_use*(1-$rfraction)))*$area;
+	$savBR_cost = (($br_elec_cost-($gr_elec_cost*$rfraction+$wr_elec_cost*(1-$rfraction)))+($br_gas_cost-($gr_gas_cost*$rfraction+$wr_gas_cost*(1-$rfraction))))*$area;
+	//
+	$savWR_elec_use = ($wr_elec_use-($gr_elec_use*$rfraction+$wr_elec_use*(1-$rfraction)))*$area;
+	$savWR_gas_use = ($wr_gas_use-($gr_gas_use*$rfraction+$wr_gas_use*(1-$rfraction)))*$area;
+	$savWR_cost = (($wr_elec_cost-($gr_elec_cost*$rfraction+$wr_elec_cost*(1-$rfraction)))+($wr_gas_cost-($gr_gas_cost*$rfraction+$wr_gas_cost*(1-$rfraction))))*$area;
+}
 
 // Extract GR sensible heat flux data from database
-$gr_lo_vals = mysql_query("SELECT soil_sflux_annavg, soil_sflux_sumavg, soil_sflux_sumdaypeak, veg_sflux_annavg, veg_sflux_sumavg, veg_sflux_sumdaypeak FROM test WHERE state='$state' AND city='$city' AND building='$btype' AND irr='$irr' AND sdepth='$sdepth_lo' AND lai='$lai_lo'") or die(mysql_error());
-$gr_hi_vals = mysql_query("SELECT soil_sflux_annavg, soil_sflux_sumavg, soil_sflux_sumdaypeak, veg_sflux_annavg, veg_sflux_sumavg, veg_sflux_sumdaypeak FROM test WHERE state='$state' AND city='$city' AND building='$btype' AND irr='$irr' AND sdepth='$sdepth_hi' AND lai='$lai_hi'") or die(mysql_error());
-$gr_lo_vals = mysql_fetch_array($gr_lo_vals,MYSQL_ASSOC);
-$gr_hi_vals = mysql_fetch_array($gr_hi_vals,MYSQL_ASSOC);
+$stmt = $pdo->prepare('SELECT soil_sflux_annavg, soil_sflux_sumavg, soil_sflux_sumdaypeak, veg_sflux_annavg, veg_sflux_sumavg, veg_sflux_sumdaypeak FROM test WHERE state=:state AND city=:city AND building=:btype AND irr=:irr AND sdepth=:sdepth AND lai=:lai');
+$stmt->execute(['state' => $state, 'city' => $city, 'btype' => $btype, 'irr' => $irr, 'sdepth' => $sdepth_lo, 'lai' => $lai_lo]);
+$gr_lo_vals = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT soil_sflux_annavg, soil_sflux_sumavg, soil_sflux_sumdaypeak, veg_sflux_annavg, veg_sflux_sumavg, veg_sflux_sumdaypeak FROM test WHERE state=:state AND city=:city AND building=:btype AND irr=:irr AND sdepth=:sdepth AND lai=:lai');
+$stmt->execute(['state' => $state, 'city' => $city, 'btype' => $btype, 'irr' => $irr, 'sdepth' => $sdepth_hi, 'lai' => $lai_hi]);
+$gr_hi_vals = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $gr_soil_sflux_annavg = $interp*($gr_hi_vals['soil_sflux_annavg']-$gr_lo_vals['soil_sflux_annavg'])+$gr_lo_vals['soil_sflux_annavg'];
 $gr_soil_sflux_sumavg = $interp*($gr_hi_vals['soil_sflux_sumavg']-$gr_lo_vals['soil_sflux_sumavg'])+$gr_lo_vals['soil_sflux_sumavg'];
@@ -283,10 +293,13 @@ $gr_sflux_sumdaypeak = -1.0* $gr_sflux_sumdaypeak;
 // END DJS MODIFICATION SEPT 2011
 
 // Extract conventional roof sensible heat flux data from database
-$br_vals = mysql_query("SELECT cr_flux_annavg, cr_flux_sumavg, cr_flux_sumdaypeak FROM test WHERE state='$state' AND city='$city' AND building='$btype' AND roof='BR'") or die(mysql_error());
-$wr_vals = mysql_query("SELECT cr_flux_annavg, cr_flux_sumavg, cr_flux_sumdaypeak FROM test WHERE state='$state' AND city='$city' AND building='$btype' AND roof='WR'") or die(mysql_error());
-$br_vals = mysql_fetch_array($br_vals,MYSQL_ASSOC);
-$wr_vals = mysql_fetch_array($wr_vals,MYSQL_ASSOC);
+$stmt = $pdo->prepare('SELECT cr_flux_annavg, cr_flux_sumavg, cr_flux_sumdaypeak FROM test WHERE state=:state AND city=:city AND building=:btype AND roof="BR"');
+$stmt->execute(['state' => $state, 'city' => $city, 'btype' => $btype]);
+$br_vals = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT cr_flux_annavg, cr_flux_sumavg, cr_flux_sumdaypeak FROM test WHERE state=:state AND city=:city AND building=:btype AND roof="WR"');
+$stmt->execute(['state' => $state, 'city' => $city, 'btype' => $btype]);
+$wr_vals = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $br_flux_annavg = $br_vals['cr_flux_annavg'];
 $br_flux_sumavg = $br_vals['cr_flux_sumavg'];
@@ -307,10 +320,13 @@ else { // rest of roof is "white"
 	$gr_sflux_sumdaypeak = $gr_sflux_sumdaypeak*$rfraction + $wr_flux_sumdaypeak*(1-$rfraction); }
 
 // Extract GR latent heat flux data from database
-$gr_lo_vals = mysql_query("SELECT soil_lflux_annavg, soil_lflux_sumavg, soil_lflux_sumdaypeak, veg_lflux_annavg, veg_lflux_sumavg, veg_lflux_sumdaypeak FROM test WHERE state='$state' AND city='$city' AND building='$btype' AND irr='$irr' AND sdepth='$sdepth_lo' AND lai='$lai_lo'") or die(mysql_error());
-$gr_hi_vals = mysql_query("SELECT soil_lflux_annavg, soil_lflux_sumavg, soil_lflux_sumdaypeak, veg_lflux_annavg, veg_lflux_sumavg, veg_lflux_sumdaypeak FROM test WHERE state='$state' AND city='$city' AND building='$btype' AND irr='$irr' AND sdepth='$sdepth_hi' AND lai='$lai_hi'") or die(mysql_error());
-$gr_lo_vals = mysql_fetch_array($gr_lo_vals,MYSQL_ASSOC);
-$gr_hi_vals = mysql_fetch_array($gr_hi_vals,MYSQL_ASSOC);
+$stmt = $pdo->prepare('SELECT soil_lflux_annavg, soil_lflux_sumavg, soil_lflux_sumdaypeak, veg_lflux_annavg, veg_lflux_sumavg, veg_lflux_sumdaypeak FROM test WHERE state=:state AND city=:city AND building=:btype AND irr=:irr AND sdepth=:sdepth AND lai=:lai');
+$stmt->execute(['state' => $state, 'city' => $city, 'btype' => $btype, 'irr' => $irr, 'sdepth' => $sdepth_lo, 'lai' => $lai_lo]);
+$gr_lo_vals = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT soil_lflux_annavg, soil_lflux_sumavg, soil_lflux_sumdaypeak, veg_lflux_annavg, veg_lflux_sumavg, veg_lflux_sumdaypeak FROM test WHERE state=:state AND city=:city AND building=:btype AND irr=:irr AND sdepth=:sdepth AND lai=:lai');
+$stmt->execute(['state' => $state, 'city' => $city, 'btype' => $btype, 'irr' => $irr, 'sdepth' => $sdepth_hi, 'lai' => $lai_hi]);
+$gr_hi_vals = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $gr_soil_lflux_annavg = $interp*($gr_hi_vals['soil_lflux_annavg']-$gr_lo_vals['soil_lflux_annavg'])+$gr_lo_vals['soil_lflux_annavg'];
 $gr_soil_lflux_sumavg = $interp*($gr_hi_vals['soil_lflux_sumavg']-$gr_lo_vals['soil_lflux_sumavg'])+$gr_lo_vals['soil_lflux_sumavg'];
@@ -337,10 +353,13 @@ $gr_lflux_sumavg = $gr_lflux_sumavg*$rfraction;
 $gr_lflux_sumdaypeak = $gr_lflux_sumdaypeak*$rfraction;
 
 // Extract GR water balance data from database
-$gr_lo_vals = mysql_query("SELECT cumu_precip, cumu_et, cumu_irr, cumu_ro FROM test WHERE state='$state' AND city='$city' AND building='$btype' AND irr='$irr' AND sdepth='$sdepth_lo' AND lai='$lai_lo'") or die(mysql_error());
-$gr_hi_vals = mysql_query("SELECT cumu_precip, cumu_et, cumu_irr, cumu_ro FROM test WHERE state='$state' AND city='$city' AND building='$btype' AND irr='$irr' AND sdepth='$sdepth_hi' AND lai='$lai_hi'") or die(mysql_error());
-$gr_lo_vals = mysql_fetch_array($gr_lo_vals,MYSQL_ASSOC);
-$gr_hi_vals = mysql_fetch_array($gr_hi_vals,MYSQL_ASSOC);
+$stmt = $pdo->prepare('SELECT cumu_precip, cumu_et, cumu_irr, cumu_ro FROM test WHERE state=:state AND city=:city AND building=:btype AND irr=:irr AND sdepth=:sdepth AND lai=:lai');
+$stmt->execute(['state' => $state, 'city' => $city, 'btype' => $btype, 'irr' => $irr, 'sdepth' => $sdepth_lo, 'lai' => $lai_lo]);
+$gr_lo_vals = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$stmt = $pdo->prepare('SELECT cumu_precip, cumu_et, cumu_irr, cumu_ro FROM test WHERE state=:state AND city=:city AND building=:btype AND irr=:irr AND sdepth=:sdepth AND lai=:lai');
+$stmt->execute(['state' => $state, 'city' => $city, 'btype' => $btype, 'irr' => $irr, 'sdepth' => $sdepth_hi, 'lai' => $lai_hi]);
+$gr_hi_vals = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $gr_cumu_precip = ($interp*($gr_hi_vals['cumu_precip']-$gr_lo_vals['cumu_precip'])+$gr_lo_vals['cumu_precip']);
 $gr_cumu_et = ($interp*($gr_hi_vals['cumu_et']-$gr_lo_vals['cumu_et'])+$gr_lo_vals['cumu_et']);
@@ -369,8 +388,8 @@ if ($selected_units == "ip") // nothing special if SI because SI is default for 
 // DJS END convert for SI
 
 //Disconnect from database
-mysql_close($db);
-
+$pdo = null;
+$stmt = null;
 
 //Checks to see if the user provided their own utility rate info and uses it to calculate costs if provided
 //if ($user_rates == "yes") {
