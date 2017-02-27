@@ -379,8 +379,8 @@ if ($selected_units == "ip") // nothing special if SI because SI is default for 
   $gr_cumu_ro= $gr_cumu_ro/25.4;
 
   $cr_cumu_precip= $cr_cumu_precip/25.4;
-  $cr_cumu_et= $cr_cumu_et/25.4;
-  $cr_cumu_irr=$cr_cumu_irr/25.4;
+  //$cr_cumu_et= $cr_cumu_et/25.4;
+  //$cr_cumu_irr=$cr_cumu_irr/25.4;
   $cr_cumu_ro= $cr_cumu_ro/25.4;
 
 }
