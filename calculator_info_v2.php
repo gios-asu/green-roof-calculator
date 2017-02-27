@@ -5,7 +5,7 @@
   <script src="scripts/Calculator.js" type="text/javascript"></script>
   <style type="text/css">
     <!--
-    .style8 {color: #666666;}
+    .style8 {color: #000000;}
     -->
   </style>
   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
@@ -19,7 +19,7 @@
   }
   .style4 {
   	font-size: 1.2em;
-  	font-family: garamond, georgia, serif;
+  	font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
   }
   -->
   </style>
@@ -109,7 +109,7 @@ The information presented in this calculator is based on annual building energy 
 <p>==================================</p>
 <p><sup>1</sup>All &quot;OLD&quot; buildings were simulated as part of the initial development of the Green Roof Energy Calculator and used version 3 of EnergyPlus. The recent addition of &quot;NEW&quot; construciton buildings used the version of EnergyPlus that was currently available -- version 6. Some minor differences between these versions affect results--most notably their handling of precipitation (see below). For all cases the simulations were carried out using the standard conduction transfer function solution scheme. Research versions of EnergyPlus in which the Green Roof Module used the Conduction Finite Difference (CFD) scheme are available, but not as part of the standard release of EnergyPlus.  See the EnergyPlus Input/Output reference guide for a description of each.</p>
 
-<p><sup>2</sup>The following description of the benchmark files can be found on the <a href="http://apps1.eere.energy.gov/news/progress_alerts.cfm/pa_id=132">Department of Energy website</a>:</p>
+<p><sup>2</sup>The following description of the benchmark files can be found on the <a href="https://apps1.eere.energy.gov/news/progress_alerts.cfm/pa_id=132" target="_blank">Department of Energy website</a>:</p>
 
 <table width="75%" border="0" align="center">
   <tr>
@@ -237,7 +237,7 @@ The information presented in this calculator is based on annual building energy 
 </table>
 </p>
 
-<p><sup>4</sup>The EnergyPlus weather files used are based on Typical Meteorological Year 3 (TMY3) data. More information about TMY3 data can be found on the <a href="http://apps1.eere.energy.gov/buildings/energyplus/weatherdata_sources.cfm#TMY3">EnergyPlus website</a>.</p>
+<p><sup>4</sup>The EnergyPlus weather files used are based on Typical Meteorological Year 3 (TMY3) data. More information about TMY3 data can be found on the <a href="https://apps1.eere.energy.gov/buildings/energyplus/weatherdata_sources.cfm#TMY3" target="_blank">EnergyPlus website</a>.</p>
 
 <p><sup>5</sup>Energy and cost savings were determined on a per square foot of roof basis.  The savings is multiplied by the user specified roof area and percent green roof to determine the total savings.</p>
 

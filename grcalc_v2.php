@@ -25,11 +25,11 @@
       <!--
       .tip {border-bottom: 1px dashed;cursor:help;padding: 1px;height:100%;font-weight: bold;}
 
-      .style8 {color: #666666;}
+      .style8 {color: #000000;}
 
-      .style12 {color: #6A7F10;}
+      .style12 {color: #8c1d40;}
 
-      .style13 {font-size: .7em;color: #666666;}
+      .style13 {font-size: .7em;color: #000000;}
 
       .style14 {font-size: 0.8em}
 

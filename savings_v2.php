@@ -13,19 +13,19 @@
 
 <style type="text/css">
 <!--
-.style8 {color: #666666}
+.style8 {color: #000000;}
 -->
 </style>
 <style type="text/css">
 <!--
-.style12 {color: #339900}
+.style12 {color: #8c1d40;}
 -->
 </style>
 <style type="text/css">
 <!--
-.style13 {color: #666666;
+.style13 {color: #000000;
 	font-size: 1.3em;
-	font-family: garamond, georgia, serif;
+	font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 -->
 </style>
@@ -49,7 +49,7 @@
 }
 .style3 {font-size: 0.35em}
 .style4 {
-	color: #336699;
+	color: #8c1d40;
 	font-style: italic;
 }
 -->
