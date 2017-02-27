@@ -1,182 +1,52 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><!-- InstanceBegin template="/Templates/sitepages.dwt.php" codeOutsideHTMLIsLocked="true" -->
-<head>
-<!-- Portland State University Identity Standards Dreamweaver Template -->
-<!-- Version 1.1 01 Feb 2007 -->
-<!-- More info: http://www.pdx.edu/ucomm/ -->
+  <head>
+    <a name="1"><title>GBRL | Green Roof Energy Calculator</title></a>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <meta name="description" content="Put your site description here." />
+    <meta name="keywords" content="put, your, keywords, here" />
+  </head>
 
-<!-- InstanceParam name="PSUHeaderImage" type="boolean" value="true" -->
-<!-- InstanceParam name="PSUHeaderGreen" type="boolean" value="false" -->
-<!-- InstanceParam name="RandomImageSiteHeader" type="boolean" value="false" -->
-<!-- InstanceParam name="ColumnLeft" type="boolean" value="false" -->
-<!-- InstanceParam name="ColumnRight" type="boolean" value="true" -->
-<!-- InstanceParam name="QuickLinks" type="boolean" value="true" -->
-<!-- InstanceParam name="Sitemap" type="boolean" value="false" -->
-<!-- InstanceParam name="WindletsHorizontal" type="boolean" value="false" -->
-<!-- InstanceBeginEditable name="doctitle" -->
-<a name="1"><title>GBRL | Green Roof Energy Calculator</title></a>
-<!-- InstanceEndEditable -->
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<meta name="description" content="Put your site description here." />
-<meta name="keywords" content="put, your, keywords, here" />
-<!-- ULTIMATE DROP DOWN MENU Version 4.5 by Brothercake -->
-<!-- http://www.udm4.com/ -->
-<script type="text/javascript" src="http://webdev.pdx.edu/js/udm4_5/udm-custom.js"></script>
-<script type="text/javascript" src="http://webdev.pdx.edu/js/udm4_5/udm-control.js"></script>
-<link rel="shortcut icon" href="http://webdev.pdx.edu/favicon.ico" />
-<link rel="stylesheet" href="http://webdev.pdx.edu/css/psu.css" type="text/css" media="screen,projection" />
-<link rel="stylesheet" href="http://webdev.pdx.edu/css/print.css" type="text/css" media="print" />
-<link rel="stylesheet" href="http://webdev.pdx.edu/css/udm.css" type="text/css" media="screen,projection" />
-<!-- local stylesheet to override global stylesheets above -->
-<link rel="stylesheet" href="../css/local.css" type="text/css" media="screen,projection" />
-<!-- override global PSU header random image directory -->
-<script type="text/javascript" language="JavaScript">
-<!--
-var ImageDir = 'http://webdev.pdx.edu/images/header/';
-//-->
-</script>
-<!-- /override global PSU header random image directory -->
+  <body bgcolor="#FFFFFF" text="#000000">
+    <!-- content -->
+    <script language="javascript" type="text/javascript" src="./scripts/chainedselects.js">
+      /***********************************************
+      * Chained Selects script- By Xin Yang (http://www.yxscripts.com/)
+      * Script featured on/available at http://www.dynamicdrive.com/
+      * Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+      ***********************************************/
+    </script>
+    <script language="javascript" type="text/javascript" src="./scripts/citiesconfig.js"></script>
 
-<?php
-/* toggle for home page elements
-   (see if statements for $IsHomepage throughout)
-   compare PHP_SELF to absolute local path for site's home page */
-if ($_SERVER["PHP_SELF"] === "/templates/dreamweaver/index.php") {$IsHomepage = true;}
-/* /toggle for home page elements */
-?>
-<style type="text/css">
-<!--
-.style1 {	font-size: x-small;
-	font-style: italic;
-}
-.style4 {
-	font-size: 1.2em;
-	font-family: garamond, georgia, serif;
-}
--->
-</style>
-</head>
-<body bgcolor="#FFFFFF" text="#000000">
+    <script src="./scripts/Calculator.js" type="text/javascript"></script>
+    <script src="./scripts/boxover.js" type="text/javascript"></script>
 
-<!-- ULTIMATE DROP DOWN MENU Version 4.5 by Brothercake -->
-<!-- http://www.udm4.com/ -->
-<!-- menu script -->
-<script type="text/javascript" src="http://webdev.pdx.edu/js/udm4_5/udm-dom.js"></script>
-<!-- keyboard navigation module -->
-<script type="text/javascript" src="http://webdev.pdx.edu/js/udm4_5/udm-mod-keyboard.js"></script>
+    <style type="text/css">
+      <!--
+      .tip {border-bottom: 1px dashed;cursor:help;padding: 1px;height:100%;font-weight: bold;}
 
-<!-- page -->
-<table border="0" cellpadding="0" cellspacing="0" id="PSUPage">
-<tbody>
-<tr valign="top">
+      .style8 {color: #666666;}
 
-<!-- body -->
-<td id="PSUBody">
+      .style12 {color: #6A7F10;}
 
+      .style13 {font-size: .7em;color: #666666;}
 
-<!-- psu header -->
-<?php
-/* include PSU header */
-include_once("http://webdev.pdx.edu/includes/header_psu.inc");
-?>
-<!-- /psu header -->
+      .style14 {font-size: 0.8em}
 
+      .bold {font-weight: bold;}
+      -->
+    </style>
+    <?php
+    $btype_list = array(
+        "O_2004" => "New Office Bldg.",
+        "L_2004" => "New Residence Bldg.",
+        "O_1980" => "Old Office Bldg.",
+        "L_1980" => "Old Residence Bldg."
+    );
 
-
-
-<!-- site header -->
-<div id="SiteHeaderBackground">
-<table border="0" cellpadding="0" cellspacing="0" id="SiteHeader" width="100%">
-<tbody>
-<tr>
-<td id="SiteHeaderTitle">
-<div id="SiteHeaderName"><!-- InstanceBeginEditable name="PageTitle" -->
-  <?php if (!$IsHomepage) {echo('<a href="./" title="GBRL | Home">');} ?>
-  Green Roof Energy Calculator
-  <?php if (!$IsHomepage) {echo('</a>');} ?>
-<!-- InstanceEndEditable --></div>
-<div id="SiteHeaderParent">Green Building Research Laboratory</div>
-</td>
-<td id="SiteHeaderLinks"><a href="/Contact.php">Contact Us</a></td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- /site header -->
-
-<!-- navigation static level 1 -->
-<div id="Nav1Background">
-<div id="Nav1">
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-<tbody>
-<tr>
-<td width="14%"><a href="/index.php">GBRL Home</a></td>
-<td width="13%"><a href="/Facilities.php">Facilities</a></td>
-<td width="21%"><a href="/Resources.php">Results and Resources</a></td>
-<td width="17%"><a href="/Faculty_Staff.php">Faculty &amp; Staff</a></td>
-<td width="16%"><a href="/News.php">News</a></td>
-<td width="19%"><a href="/Contact.php">Contact</a></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- /navigation static level 1 -->
-
-<!-- columns -->
-<div id="PSUContentBackground">
-<div id="PSUContent">
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-<tbody>
-<tr>
-
-
-
-<!-- column main -->
-<td id="PSUColumnMain">
-
-
-<!-- quick links -->
-<!-- /quick links -->
-
-<!-- content -->
-<!-- InstanceBeginEditable name="Content" -->
-<script language="javascript" type="text/javascript" src="../GR_CALC_v2/Scripts/chainedselects.js">
-
-/***********************************************
-* Chained Selects script- By Xin Yang (http://www.yxscripts.com/)
-* Script featured on/available at http://www.dynamicdrive.com/
-* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
-***********************************************/
-
-</script>
-<script language="javascript" type="text/javascript" src="../GR_CALC_v2/Scripts/citiesconfig.js"></script>
-
-<script src="../GR_CALC_v2/Scripts/Calculator.js" type="text/javascript"></script>
-<script src="../GR_CALC_v2/Scripts/boxover.js" type="text/javascript"></script>
-
-
-<style type="text/css">
-<!--
-.tip {border-bottom: 1px dashed;cursor:help;padding: 1px;height:100%;font-weight: bold;}
-
-.style8 {color: #666666;}
-
-.style12 {color: #6A7F10;}
-
-.style13 {font-size: .7em;color: #666666;}
-
-.style14 {font-size: 0.8em}
-
-.bold {font-weight: bold;}
--->
-</style>
-<?php
-$btype_list = array("O_2004"=>"New Office Bldg.","L_2004"=>"New Residence Bldg.","O_1980"=>"Old Office Bldg.","L_1980"=>"Old Residence Bldg.");
-
-function dynamic_select($the_array, $element_name) {
-    $menu .= "<select name=\"".$element_name."\" id=\"".$element_name."\">\n";
-    if (empty($_SESSION[$element_name])) {
+    function dynamic_select($the_array, $element_name, $init_value) {
+      $menu = "<select name=\"".$element_name."\" id=\"".$element_name."\">\n";
+      if (empty($_SESSION[$element_name])) {
         if ($init_value == "") {
             $menu .= "  <option value=\"\"></option>\n";
              $curr_val = "";
@@ -439,98 +309,42 @@ function dynamic_radio_horiz($the_array, $element_name, $init_value, $on_click) 
   </table>
 </form>
 
+    <script type="text/javascript">
+      var locate = window.location;
+      document.calculator.urlcheck.value = locate;
+      var text = document.calculator.urlcheck.value;
 
-<script type="text/javascript">
-var locate = window.location
-document.calculator.urlcheck.value = locate
-var text = document.calculator.urlcheck.value
+      function delineate(str)
+      {
+        point = str.lastIndexOf("#");
+        return(str.substring(point+1,str.length));
+      }
 
-function delineate(str)
-{
-point = str.lastIndexOf("#");
-return(str.substring(point+1,str.length));
-}
+      var urlvalue = delineate(text);
 
-var urlvalue = delineate(text)
+      function checkurl() {
+        if  (urlvalue =='reset') {
+          resetListGroup('cities');
+          setTimeout("window.location.hash='retain'",1);
+        }
+        else {
+          window.location.hash="retain";
+        }
+      }
 
-function checkurl() {
+      function sesssion_reset() {
+        window.location.href="session.php";
+      }
 
-if  (urlvalue =='reset'){
-	resetListGroup('cities');
-	setTimeout("window.location.hash='retain'",1)}
-	else {window.location.hash="retain";}
-}
+      function init() {
+        initListGroup('cities', document.calculator.state, document.calculator.city, 'cs');
+        checkurl();
+        toggle();
+        hide();
+      }
 
-function sesssion_reset(){
-window.location.href="session.php";
-
-}
-function init() { 
-initListGroup('cities', document.calculator.state, document.calculator.city, 'cs');
-checkurl();
-toggle();
-hide();
-}
-
-window.onload = init;
-</script>
-
-<!-- InstanceEndEditable -->
-<!-- /content -->
-
-
-
-<br clear="all" /></td>
-<!-- /column main -->
-
-
-<!-- column right -->
-<td id="PSUColumnRight">
-
-<!-- windlets vertical --><!-- /windlets vertical --></td>
-<!-- /column right -->
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- /columns -->
-
-
-<div id="WindletsHorizontalBackground"></div>
-
-
-<!-- site footer -->
-<div id="SiteFooterBackground">
-<div id="SiteFooter"><a href="/Contact.php">Contact Us</a></div>
-</div>
-<!-- /site footer -->
-
-<!-- psu footer -->
-<?php
-/* include psu footer */
-include_once("http://webdev.pdx.edu/includes/footer_psu.inc");
-?>
-<!-- /psu footer -->
-
-</td>
-<!-- /body -->
-
-<!-- margin right -->
-<td id="PSUMarginRight"><img alt="" border="0" src="http://webdev.pdx.edu/images/PSUMarginRight.png" width="72" /></td>
-<!-- /margin right -->
-
-</tr>
-</tbody>
-</table>
-<!-- /page -->
-
-<!-- navigation dynamic -->
-<?php
-$NavigationStyle = "udm";
-include("../includes/navigation.php");
-?>
-<!-- /navigation dynamic -->
-
-</body>
-<!-- InstanceEnd --></html>
+      window.onload = init;
+    </script>
+    <!-- /content -->
+  </body>
+</html>

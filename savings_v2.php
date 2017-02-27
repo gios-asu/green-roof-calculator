@@ -1,35 +1,19 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><!-- InstanceBegin template="/Templates/frontpage.dwt.php" codeOutsideHTMLIsLocked="true" -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- Portland State University Identity Standards Dreamweaver Template -->
-<!-- Version 1.1 01 Feb 2007 -->
-<!-- More info: http://www.pdx.edu/ucomm/ -->
-
-<!-- InstanceParam name="PSUHeaderImage" type="boolean" value="true" -->
-<!-- InstanceParam name="PSUHeaderGreen" type="boolean" value="false" -->
-<!-- InstanceParam name="RandomImageSiteHeader" type="boolean" value="false" -->
-<!-- InstanceParam name="ColumnLeft" type="boolean" value="false" -->
-<!-- InstanceParam name="ColumnRight" type="boolean" value="true" -->
-<!-- InstanceParam name="QuickLinks" type="boolean" value="true" -->
-<!-- InstanceParam name="Sitemap" type="boolean" value="false" -->
-<!-- InstanceParam name="WindletsHorizontal" type="boolean" value="false" -->
-<!-- InstanceBeginEditable name="doctitle" -->
 <title>GBRL | Green Roof Calculator Results</title>
 
-<script language="javascript" src="../GR_CALC_v2/Scripts/chainedselects.js">
-
-/***********************************************
-* Chained Selects script- By Xin Yang (http://www.yxscripts.com/)
-* Script featured on/available at http://www.dynamicdrive.com/
-* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
-***********************************************/
-
+<script language="javascript" src="./scripts/chainedselects.js">
+	/***********************************************
+	* Chained Selects script- By Xin Yang (http://www.yxscripts.com/)
+	* Script featured on/available at http://www.dynamicdrive.com/
+	* Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+	***********************************************/
 </script>
 
 <style type="text/css">
 <!--
 .style8 {color: #666666}
-
 -->
 </style>
 <style type="text/css">
@@ -54,35 +38,10 @@
 .style14 {font-size: 0.8em}
 -->
 </style>
-<!-- InstanceEndEditable -->
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="description" content="Put your site description here." />
 <meta name="keywords" content="put, your, keywords, here" />
-<!-- ULTIMATE DROP DOWN MENU Version 4.5 by Brothercake -->
-<!-- http://www.udm4.com/ -->
-<script type="text/javascript" src="http://webdev.pdx.edu/js/udm4_5/udm-custom.js"></script>
-<script type="text/javascript" src="http://webdev.pdx.edu/js/udm4_5/udm-control.js"></script>
-<link rel="shortcut icon" href="http://webdev.pdx.edu/favicon.ico" />
-<link rel="stylesheet" href="http://webdev.pdx.edu/css/psu.css" type="text/css" media="screen,projection" />
-<link rel="stylesheet" href="http://webdev.pdx.edu/css/print.css" type="text/css" media="print" />
-<link rel="stylesheet" href="http://webdev.pdx.edu/css/udm.css" type="text/css" media="screen,projection" />
-<!-- local stylesheet to override global stylesheets above -->
-<link rel="stylesheet" href="../css/local.css" type="text/css" media="screen,projection" />
-<!-- override global PSU header random image directory -->
-<script type="text/javascript" language="JavaScript">
-<!--
-var ImageDir = 'http://webdev.pdx.edu/images/header/';
-//-->
-</script>
-<!-- /override global PSU header random image directory -->
 
-<?php
-/* toggle for home page elements
-   (see if statements for $IsHomepage throughout)
-   compare PHP_SELF to absolute local path for site's home page */
-if ($_SERVER["PHP_SELF"] === "/templates/dreamweaver/index.php") {$IsHomepage = true;}
-/* /toggle for home page elements */
-?>
 <style type="text/css">
 <!--
 .style2 {
@@ -98,83 +57,7 @@ if ($_SERVER["PHP_SELF"] === "/templates/dreamweaver/index.php") {$IsHomepage = 
 </head>
 <body bgcolor="#FFFFFF" text="#000000">
 
-<!-- ULTIMATE DROP DOWN MENU Version 4.5 by Brothercake -->
-<!-- http://www.udm4.com/ -->
-<!-- menu script -->
-<script type="text/javascript" src="http://webdev.pdx.edu/js/udm4_5/udm-dom.js"></script>
-<!-- keyboard navigation module -->
-<script type="text/javascript" src="http://webdev.pdx.edu/js/udm4_5/udm-mod-keyboard.js"></script>
-
-<!-- page -->
-<table width="967" height="103%" border="0" cellpadding="0" cellspacing="0" id="PSUPage">
-<tbody>
-<tr valign="top">
-
-<!-- body -->
-<td id="PSUBody">
-
-
-<!-- psu header -->
-<?php
-/* include PSU header */
-include_once("http://webdev.pdx.edu/includes/header_psu.inc");
-?>
-<!-- /psu header -->
-
-
-
-
-<!-- site header -->
-<div id="SiteHeaderBackground">
-<table border="0" cellpadding="0" cellspacing="0" id="SiteHeader" width="100%">
-<tbody>
-<tr>
-<td width="685" id="SiteHeaderTitle">
-<div id="SiteHeaderName"><?php if (!$IsHomepage) {echo('<a href="./" title="Site Name | Home">');} ?>Green Building Research Laboratory<?php if (!$IsHomepage) {echo('</a>');} ?></div>
-<div class="style3" id="SiteHeaderParent">Fundamental and applied research to further the green building industry</div></td>
-<td width="193" id="SiteHeaderLinks"><a href="../Contact.php" class="style2">Contact Us</a></td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- /site header -->
-
-<!-- navigation static level 1 -->
-<div id="Nav1Background">
-<div id="Nav1">
-<table border="0" cellpadding="0" cellspacing="0" width="100%">
-<tbody>
-<tr>
-<td width="16%"><a href="/index.php">GBRL Home</a></td>
-<td width="14%"><a href="/Facilities.php">Facilities</a></td>
-<td width="21%"><a href="/Resources.php"> Results and Resources</a></td>
-<td width="17%"><a href="/Faculty_Staff.php">Faculty &amp; Staff</a></td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- /navigation static level 1 -->
-
-<!-- columns -->
-<div id="PSUContentBackground">
-<div id="PSUContent">
-<table width="826" height="358" border="0" cellpadding="0" cellspacing="0">
-<tbody>
-<tr>
-
-
-
-<!-- column main -->
-<td width="628" id="PSUColumnMain">
-
-
-<!-- quick links -->
-<!-- /quick links -->
-
 <!-- content -->
-<!-- InstanceBeginEditable name="Content" -->
-
 
 <?php
 // create short variable names from HTML form data
@@ -763,66 +646,7 @@ onclick="window.location.href='http://greenbuilding.pdx.edu/GR_CALC_v2/grcalc_v2
 
 </p>
 
-
-<!-- InstanceEndEditable -->
 <!-- /content -->
 
-
-
-<br clear="all" /></td>
-<!-- /column main -->
-
-
-<!-- column right -->
-<td width="194" id="PSUColumnRight"><p align="center" class="style4">Fundamental and applied research to further the green building industry...</p>
-  <p align="center"><img src="../Images/GBRL_Final_Logo_v2.jpg" alt="GBRL Logo" width="168" height="169" /></p>
-  <p>&nbsp;</p>
-  <p align="center">An <a href="http://oregonbest.org">Oregon BEST</a> Signature Research Laboratory  </p>
-  <p align="center"><img src="../Images/OR BEST Logo 2014.png" alt="Oregon BEST Logo" width="203" height="71" /></p>
-  <!-- windlets vertical --><!-- /windlets vertical --></td>
-<!-- /column right -->
-</tr>
-</tbody>
-</table>
-<img alt="" border="0" src="http://webdev.pdx.edu/images/PSUMarginRight.png" width="72" /></div>
-</div>
-<!-- /columns -->
-
-
-<div id="WindletsHorizontalBackground"></div>
-
-
-<!-- site footer -->
-<div id="SiteFooterBackground">
-<div id="SiteFooter">Contact Us</div>
-</div>
-<!-- /site footer -->
-
-<!-- psu footer -->
-<?php
-/* include psu footer */
-include_once("http://webdev.pdx.edu/includes/footer_psu.inc");
-?>
-<!-- /psu footer -->
-
-</td>
-<!-- /body -->
-
-<!-- margin right -->
-<td id="PSUMarginRight">&nbsp;</td>
-<!-- /margin right -->
-
-</tr>
-</tbody>
-</table>
-<!-- /page -->
-
-<!-- navigation dynamic -->
-<?php
-$NavigationStyle = "udm";
-include("../includes/navigation.php");
-?>
-<!-- /navigation dynamic -->
-
 </body>
-<!-- InstanceEnd --></html>
+</html>
