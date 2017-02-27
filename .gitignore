@@ -1,0 +1,9 @@
+# dont include localsettings
+localsettings.ini
+localsettings.php
+localsettings.*.php
+
+Thumbs.db
+.DS_Store
+.*.swp
+*~
