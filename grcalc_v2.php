@@ -99,9 +99,10 @@
       else {
         $curr_val = $_SESSION[$element_name];
       }
+      $menu = '';
       foreach ($the_array as $key => $value) {
         $title = $element_name;
-        $menu = "<label>\n";
+        $menu .= "<label>\n";
         $menu .= "<input type=\"radio\" name=\"".$element_name."\" id=\"".$element_name."\" value=\"".$key."\" ";
         $menu .= ($key == $curr_val) ? ' checked="checked"' : '';
         $menu .=  " title=\"".$title."\" onclick=\"".$on_click."\" >\n";
