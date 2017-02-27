@@ -653,7 +653,7 @@ The Green Roof you specified for this building has a <strong>Growing Media Depth
 <p><form>
 <input type="button" value="Start Over"
 
-onclick="window.location.href='https://greenroofcalc.local.gios.asu.edu/greenroofcalc/grcalc_v2.php'">
+onclick="window.location.href='https://dev.gios.asu.edu/greenroofcalculator/grcalc_v2.php'">
 </form></p>
 <p><a href="./calculator_info_v2.php" class="style12">More background on Calculator.</a><br />
 

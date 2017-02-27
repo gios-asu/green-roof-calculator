@@ -2,7 +2,7 @@
 session_start();
 session_unset();
 session_destroy();
-header( 'Location: http://greenbuilding.pdx.edu/GR_CALC_v2/grcalc_v2.php#reset' ) ;
+header( 'Location: https://dev.gios.asu.edu/greenroofcalculator/grcalc_v2.php#retain' ) ;
 
 ?>
 
